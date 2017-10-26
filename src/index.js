@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React, { Component, PropTypes } from 'react'
 import { StyleSheet, View, ViewPropTypes } from 'react-native'
 
 // compatability for react-native versions < 0.44
@@ -18,14 +17,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   leftWrap: {
+    overflow: 'hidden',
     position: 'absolute',
     top: 0,
-    left: 0,
   },
   halfCircle: {
     position: 'absolute',
     top: 0,
-    left: 0,
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
   },
@@ -92,13 +90,14 @@ export default class PercentageCircle extends Component {
     }
   }
 
-  renderHalfCircle(rotateDegrees, halfCircleStyles) {
+  renderHalfCircle(left, rotateDegrees, halfCircleStyles) {
     const { radius, color } = this.props
     return (
       <View
         style={[
           styles.leftWrap,
           {
+            left: left,
             width: radius,
             height: radius * 2,
           },
@@ -108,6 +107,7 @@ export default class PercentageCircle extends Component {
           style={[
             styles.halfCircle,
             {
+              left: -left,
               width: radius,
               height: radius * 2,
               borderRadius: radius,
@@ -163,8 +163,8 @@ export default class PercentageCircle extends Component {
           },
         ]}
       >
-        {this.renderHalfCircle(halfCircle1Degree)}
-        {this.renderHalfCircle(halfCircle2Degree, halfCircle2Styles)}
+        {this.renderHalfCircle(this.props.radius, halfCircle1Degree)}
+        {this.renderHalfCircle(0, halfCircle2Degree, halfCircle2Styles)}
         {this.renderInnerCircle()}
       </View>
     )
